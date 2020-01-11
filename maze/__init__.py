@@ -10,7 +10,12 @@ class BaseCell:
         self._kind = kind
         self.color = self.get_colors(kind)
 
-    def set_kind(self, kind):
+    @property
+    def kind(self):
+        return self._kind
+
+    @kind.setter
+    def kind(self, kind):
         self._kind = kind
         self.color = self.get_colors(kind)
 
