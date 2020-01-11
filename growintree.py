@@ -1,8 +1,8 @@
 import random
-from draw_maze import draw_maze
+from maze.draw import draw_maze
 from maze import MazeGenerator, BaseCell
 
-w, h = 50, 50
+w, h = 30, 30
 
 
 class GITCell(BaseCell):
@@ -46,14 +46,14 @@ class GrowInTree(MazeGenerator):
             return False
         elif (i, j) not in self.accessible:
             self.accessible.append((i, j))
-            self.cell(i, j).set_kind('accessible')
+            self.cell(i, j).kind = 'accessible'
         return True
 
     def make_open(self, i, j):
         if (i, j) in self.accessible:
             self.accessible.remove((i, j))
         self.opened.add((i, j))
-        self.cell(i, j).set_kind('empty')
+        self.cell(i, j).kind = 'empty'
         return True
 
     def step(self):
@@ -72,8 +72,9 @@ class GrowInTree(MazeGenerator):
             return super().step() and False
 
     def finalize(self):
-        for (i, j) in self.accessible:
-            self.cell(i, j).set_kind('wall')
+        for c in self.cells():
+            if c.kind != 'empty':
+                c.kind = 'wall'
 
 
 draw_maze(GrowInTree)
